@@ -5,7 +5,9 @@ import com.anhnguyen.githubclient.AppPreference;
 import com.anhnguyen.githubclient.di.ApplicationComponent;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -36,5 +38,8 @@ public class BaseFragment extends Fragment{
         return ((App) getActivity().getApplication()).getApplicationComponent();
     }
 
+    void showMessage(View view, String msg) {
+        Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show();
+    }
 
 }
