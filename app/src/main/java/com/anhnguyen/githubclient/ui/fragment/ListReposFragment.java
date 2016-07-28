@@ -14,6 +14,7 @@ import com.anhnguyen.githubclient.ui.ListReposView;
 import com.anhnguyen.githubclient.ui.adapter.ListReposRecyclerAdapter;
 import com.anhnguyen.githubclient.ui.presenter.ListReposViewPresenter;
 import com.anhnguyen.githubclient.ui.widget.rcv.SpacesItemDecoration;
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 
@@ -21,7 +22,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +33,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import eu.davidea.flexibleadapter.common.SmoothScrollLinearLayoutManager;
 
 @FragmentWithArgs
 public class ListReposFragment extends BaseFragment implements ListReposView, ListReposRecyclerAdapter.OnItemClickListener{
@@ -57,6 +58,7 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationComponent().inject(this);
+        FragmentArgs.inject(this); // read @Arg fields
 
         initialize();
     }
@@ -73,8 +75,6 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
                 swipeRefreshLayout.setEnabled(false);
             }
         });
-
-        RLog.v(TAG, "onCreateView id " + orgName);
 
         return root;
     }
@@ -98,8 +98,9 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
 
     @Override
     public void onRenderData(List<Repo> listRepos) {
-        final StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(Utils.isSmallestScreenWidthAtLeast600dp(getActivity())?3:2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        //final StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(Utils.isSmallestScreenWidthAtLeast600dp(getActivity())?3:2, StaggeredGridLayoutManager.VERTICAL);
+        SmoothScrollLinearLayoutManager  smoothScrollLinearLayoutManager = new SmoothScrollLinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(smoothScrollLinearLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setClipToPadding(false);
         SpacesItemDecoration spacesItemDecoration = new SpacesItemDecoration(Utils.dpToPx(this.getActivity(), Utils.isSmallestScreenWidthAtLeast600dp(getActivity()) ? 12 : 8), Utils.isSmallestScreenWidthAtLeast600dp(getActivity())?3:2);
@@ -150,10 +151,11 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
 
     @Override
     public void showError(String message) {
-        showMessage(root, message);
+        //showMessage(root, message);
     }
 
     private void initialize() {
+        RLog.d(TAG, "Org name " + orgName);
         listReposViewPresenter.setView(this);
         listReposViewPresenter.loadOrganizeRepos(orgName);
     }

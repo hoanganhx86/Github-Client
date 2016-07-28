@@ -40,6 +40,7 @@ public class GitHubClientApiImpl implements GitHubClientApi{
 
         GitHubService gitHubService = retrofit.create(GitHubService.class);
         Observable<List<Repo>> repos = gitHubService.getOrganizationRepos(org);
+        // RLog.d("GitHubClientApiImpl", "GitHubClientApiImpl load repos org " + org + " count " + repos.map(retRepos -> retRepos.size()));
         return repos;
     }
 

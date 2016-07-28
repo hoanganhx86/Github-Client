@@ -7,6 +7,8 @@
 package com.anhnguyen.githubclient.di;
 
 import com.anhnguyen.githubclient.App;
+import com.anhnguyen.githubclient.data.Net.GitHubClientApi;
+import com.anhnguyen.githubclient.data.Net.GitHubClientApiImpl;
 
 import android.content.Context;
 
@@ -28,6 +30,12 @@ public class ApplicationModule {
     @Singleton
     Context provideApplicationContext(){
         return this.app.getApplicationContext();
+    }
+
+    @Provides
+    @Singleton
+    GitHubClientApi provideGitHubClient(){
+        return new GitHubClientApiImpl(app.getApplicationContext());
     }
 
 }

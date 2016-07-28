@@ -3,6 +3,7 @@ package com.anhnguyen.githubclient.ui.fragment;
 import com.anhnguyen.githubclient.App;
 import com.anhnguyen.githubclient.AppPreference;
 import com.anhnguyen.githubclient.di.ApplicationComponent;
+import com.hannesdorfmann.fragmentargs.FragmentArgs;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,7 @@ public class BaseFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getApplicationComponent().inject(this);
+        FragmentArgs.inject(this); // read @Arg fields
         setRetainInstance(true);
     }
 

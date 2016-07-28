@@ -11,6 +11,7 @@ import com.anhnguyen.githubclient.data.Net.GitHubClientApi;
 import com.anhnguyen.githubclient.ui.activity.BaseActivity;
 import com.anhnguyen.githubclient.ui.activity.MainActivity;
 import com.anhnguyen.githubclient.ui.fragment.BaseFragment;
+import com.anhnguyen.githubclient.ui.fragment.ListReposFragment;
 
 import android.content.Context;
 
@@ -24,6 +25,7 @@ public interface ApplicationComponent {
 
     void inject(BaseActivity activity);
     void inject(BaseFragment fragment);
+    void inject(ListReposFragment fragment);
 
     void inject(MainActivity activity);
 
