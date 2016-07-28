@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
@@ -55,6 +56,8 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
     RecyclerView recyclerView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.progressbar)
+    ProgressBar progressBar;
     
     ListReposRecyclerAdapter adapter;
 
@@ -129,9 +132,19 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
 
     @Override
     public void showLoading() {
-        if(swipeRefreshLayout != null){
-            swipeRefreshLayout.setRefreshing(true);
-            swipeRefreshLayout.setEnabled(false);
+        RLog.d(TAG, "showLoading");
+        if((swipeRefreshLayout != null && ! swipeRefreshLayout.isRefreshing()) && progressBar != null){
+            progressBar.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            }, 100);
+        }else {
+            if(swipeRefreshLayout != null){
+                swipeRefreshLayout.setRefreshing(true);
+                swipeRefreshLayout.setEnabled(false);
+            }
         }
     }
 
@@ -140,6 +153,10 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
         if(swipeRefreshLayout != null){
             swipeRefreshLayout.setRefreshing(false);
             swipeRefreshLayout.setEnabled(true);
+        }
+
+        if(progressBar != null){
+            progressBar.setVisibility(View.GONE);
         }
     }
 

@@ -97,6 +97,7 @@ public class RepoCommitsActivity extends BaseActivity implements RepoView {
 
     private void init() {
         RLog.d(TAG, "org" + orgName + " repo " + repoName);
+        showLoading();
         repoViewPresenter.loadRepoCommits(orgName, repoName);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -139,9 +140,16 @@ public class RepoCommitsActivity extends BaseActivity implements RepoView {
 
     @Override
     public void showLoading() {
+        RLog.d(TAG, "showLoading");
         if(swipeRefreshLayout != null){
-            swipeRefreshLayout.setRefreshing(true);
-            swipeRefreshLayout.setEnabled(false);
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            });
+
         }
     }
 
