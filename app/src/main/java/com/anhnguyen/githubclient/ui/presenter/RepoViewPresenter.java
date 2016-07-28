@@ -10,13 +10,12 @@ package com.anhnguyen.githubclient.ui.presenter;
 import com.anhnguyen.githubclient.Config;
 import com.anhnguyen.githubclient.RLog;
 import com.anhnguyen.githubclient.data.Net.GitHubClientApi;
-import com.anhnguyen.githubclient.data.model.Repo;
-import com.anhnguyen.githubclient.ui.ListReposView;
+import com.anhnguyen.githubclient.data.model.Commit;
+import com.anhnguyen.githubclient.ui.RepoView;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,15 +25,15 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ListReposViewPresenter implements Presenter{
-    public static final String TAG = "ListReposViewPresenter";
+public class RepoViewPresenter implements Presenter{
+    public static final String TAG = "RepoViewPresenter";
 
     GitHubClientApi gitHubClientApi;
-    ListReposView view;
+    RepoView view;
     Subscription subscription;
 
     @Inject
-    public ListReposViewPresenter(GitHubClientApi gitHubClientApi){
+    public RepoViewPresenter(GitHubClientApi gitHubClientApi){
         this.gitHubClientApi = gitHubClientApi;
     }
 
@@ -56,7 +55,7 @@ public class ListReposViewPresenter implements Presenter{
         }
     }
 
-    public void setView(@NonNull ListReposView view) {
+    public void setView(@NonNull RepoView view) {
         this.view = view;
     }
 
@@ -80,16 +79,17 @@ public class ListReposViewPresenter implements Presenter{
         this.view.showError(error);
     }
 
-    public void loadOrganizeRepos(String org){
+    public void loadRepoCommits(String org, String repo){
+        showViewLoading();
         if(TextUtils.isEmpty(org)){
             showErrorMessage("Organization is empty");
             return;
         }
-        showViewLoading();
-        subscription = gitHubClientApi.getOrganizationRepos(org)
+
+        subscription = gitHubClientApi.getRepoListCommits(org, repo)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer<List<Repo>>() {
+            .subscribe(new Observer<List<Commit>>() {
 
                 @Override
                 public void onCompleted() {
@@ -105,10 +105,9 @@ public class ListReposViewPresenter implements Presenter{
                 }
 
                 @Override
-                public void onNext(List<Repo> repos) {
-                    RLog.d(TAG, "data loaded size " + repos.size());
-                    Collections.sort(repos, new Repo.RepoComparator());
-                    view.onRenderData(repos);
+                public void onNext(List<Commit> commits) {
+                    RLog.d(TAG, "data loaded size " + commits.size());
+                    view.onRenderData(commits);
                 }
             });
     }

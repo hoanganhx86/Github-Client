@@ -12,42 +12,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import java.util.Comparator;
 import java.util.List;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
 
-public class Repo implements IFlexible<RecyclerView.ViewHolder> {
+public class Commit implements IFlexible<RecyclerView.ViewHolder> {
 
-    @SerializedName("id")
-    public String id;
-    @SerializedName("name")
-    public String name;
-    @SerializedName("full_name")
-    public String fullName;
+    public String sha;
 
-    @SerializedName("forks_count")
-    public int forkCount;
+    @SerializedName("author")
+    public Author author;
 
-    @SerializedName("watchers")
-    public int watchers;
+    @SerializedName("message")
+    public String message;
 
-    @SerializedName("clone_url")
-    public String cloneUrl;
+    @SerializedName("url")
+    public String url;
 
-    @SerializedName("description")
-    public String description;
+    @SerializedName("comment_count")
+    public int commentCount;
 
-    public static class RepoComparator implements Comparator<Repo> {
-
-        @Override
-        public int compare(Repo lhs, Repo rhs) {
-            return rhs.forkCount - lhs.forkCount;
-        }
-    }
-
-
+//    public static class CommitComparator implements Comparator<Commit> {
+//
+//        @Override
+//        public int compare(Commit lhs, Commit rhs) {
+//            return rhs.author. - lhs.forkCount;
+//        }
+//    }
 
     /*---------------*/
 	/* Util METHODS for working with flexible adapter */
@@ -83,13 +75,13 @@ public class Repo implements IFlexible<RecyclerView.ViewHolder> {
     public boolean equals(Object o){
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Repo that = (Repo) o;
-        return id.equals(that.id);
+        Commit that = (Commit) o;
+        return sha.equals(that.sha);
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return sha.hashCode();
     }
 
     @Override

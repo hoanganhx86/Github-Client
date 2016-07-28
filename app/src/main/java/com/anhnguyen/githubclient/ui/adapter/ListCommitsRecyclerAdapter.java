@@ -1,6 +1,8 @@
 package com.anhnguyen.githubclient.ui.adapter;
 
 import com.anhnguyen.githubclient.R;
+import com.anhnguyen.githubclient.RLog;
+import com.anhnguyen.githubclient.data.model.Commit;
 import com.anhnguyen.githubclient.data.model.Repo;
 import com.anhnguyen.githubclient.ui.widget.rcv.ItemTouchHelperAdapter;
 
@@ -19,7 +21,7 @@ import java.util.List;
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.viewholders.FlexibleViewHolder;
 
-public class ListReposRecyclerAdapter extends FlexibleAdapter<Repo> implements ItemTouchHelperAdapter {
+public class ListCommitsRecyclerAdapter extends FlexibleAdapter<Commit> implements ItemTouchHelperAdapter {
 
     // ===========================================================
     // Constants
@@ -40,7 +42,7 @@ public class ListReposRecyclerAdapter extends FlexibleAdapter<Repo> implements I
     // Constructors
     // ===========================================================
 
-    public ListReposRecyclerAdapter(Activity activity, List<Repo> items){
+    public ListCommitsRecyclerAdapter(Activity activity, List<Commit> items){
         super(items, activity);
         this.activity = activity;
     }
@@ -58,8 +60,8 @@ public class ListReposRecyclerAdapter extends FlexibleAdapter<Repo> implements I
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
         if(holder instanceof ViewHolder){
-            final Repo repo = getItem(position);
-            ((ViewHolder)holder).bind(activity, repo, onItemClickListener);
+            final Commit commit = getItem(position);
+            ((ViewHolder)holder).bind(activity, commit, onItemClickListener);
 
             animateView(holder.itemView, position, isSelected(position));
         }
@@ -120,17 +122,11 @@ public class ListReposRecyclerAdapter extends FlexibleAdapter<Repo> implements I
             tvContent = (TextView) view.findViewById(R.id.tv_content);
         }
 
-        public void bind(Activity activity, final Repo repo, final OnItemClickListener onItemClickListener){
-            // SizeF sizeView = content.getSize();
-            tvName.setText(repo.name);
-            tvContent.setText(repo.description);
+        public void bind(Activity activity, final Commit commit, final OnItemClickListener onItemClickListener){
+            RLog.d("ViewHolder ", "Commmit " + commit.sha +  " " + commit.message);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(onItemClickListener != null) onItemClickListener.onContentItemClicked(v, repo);
-                }
-            });
+            tvName.setText(commit.sha);
+            tvContent.setText(commit.message);
         }
 
         @Override

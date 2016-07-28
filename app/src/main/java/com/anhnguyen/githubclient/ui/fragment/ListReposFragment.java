@@ -11,6 +11,7 @@ import com.anhnguyen.githubclient.RLog;
 import com.anhnguyen.githubclient.Utils;
 import com.anhnguyen.githubclient.data.model.Repo;
 import com.anhnguyen.githubclient.ui.ListReposView;
+import com.anhnguyen.githubclient.ui.activity.RepoCommitsActivity;
 import com.anhnguyen.githubclient.ui.adapter.ListReposRecyclerAdapter;
 import com.anhnguyen.githubclient.ui.presenter.ListReposViewPresenter;
 import com.anhnguyen.githubclient.ui.widget.rcv.SpacesItemDecoration;
@@ -18,8 +19,11 @@ import com.hannesdorfmann.fragmentargs.FragmentArgs;
 import com.hannesdorfmann.fragmentargs.annotation.Arg;
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -162,6 +166,16 @@ public class ListReposFragment extends BaseFragment implements ListReposView, Li
 
     @Override
     public void onContentItemClicked(View view, Repo repo) {
-        // TODO : show list commit
+        Intent intent = new Intent(getActivity(), RepoCommitsActivity.class);
+        intent.putExtra(RepoCommitsActivity.EXTRA_ORG_NAME, orgName);
+        intent.putExtra(RepoCommitsActivity.EXTRA_REPO_NAME, repo.name);
+
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity());
+//            Pair.create(view, getString(R.string.transition_content_background)));
+//            Pair.create(view.findViewById(R.id.rcv_media), getString(R.string.transition_rcv_media)),
+//            Pair.create(view.findViewById(R.id.text_container), getString(R.string.transition_text_container)));
+
+        ActivityCompat.startActivity(getActivity(), intent, activityOptionsCompat.toBundle());
+        // Snackbar.make(root, "open input activity content " + content.content, Snackbar.LENGTH_SHORT).show();
     }
 }

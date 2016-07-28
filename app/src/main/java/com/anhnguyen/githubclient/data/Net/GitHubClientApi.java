@@ -6,6 +6,7 @@
  */
 package com.anhnguyen.githubclient.data.Net;
 
+import com.anhnguyen.githubclient.data.model.Commit;
 import com.anhnguyen.githubclient.data.model.Repo;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface GitHubClientApi {
 
     Observable<List<Repo>> getOrganizationRepos(String org);
 
+    Observable<List<Commit>> getRepoListCommits(String org, String repo);
 }

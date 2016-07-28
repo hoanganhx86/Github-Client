@@ -6,6 +6,9 @@
  */
 package com.anhnguyen.githubclient.data.Net;
 
+import com.google.gson.annotations.SerializedName;
+
+import com.anhnguyen.githubclient.data.model.Commit;
 import com.anhnguyen.githubclient.data.model.Repo;
 
 import java.util.List;
@@ -18,5 +21,20 @@ public interface GitHubService {
 
     @GET("orgs/{org}/repos")
     Observable<List<Repo>> getOrganizationRepos(@Path("org") String org);
+
+
+    class RepoCommitsResponse{
+
+        @SerializedName("sha")
+        public String sha;
+
+        @SerializedName("commit")
+        Commit commit;
+
+    }
+
+    @GET("repos/{org}/{repo}/commits")
+    Observable<List<RepoCommitsResponse>> getOrganizationRepos(@Path("org") String org, @Path("repo") String repo);
+
 
 }
